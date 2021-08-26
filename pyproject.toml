@@ -1,0 +1,7 @@
+[build-system]
+requires = ["maturin>=0.11,<0.12"]
+build-backend = "maturin"
+
+[tool.black]
+line-length = 79
+target_version = ['py39']
