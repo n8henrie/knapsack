@@ -1,5 +1,7 @@
 fn main() {
     println!(
-        "cargo:rustc-link-arg=-Wl,-rpath,/Applications/Xcode.app/Contents/Developer/Library/Frameworks"
+        "cargo:rustc-link-search=native={}{}",
+        env!("PYENV_ROOT"),
+        "/versions/3.9.6/Python.framework/Versions/3.9/lib"
     );
 }
