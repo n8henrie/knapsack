@@ -6,7 +6,9 @@ from itertools import combinations
 import knapsack
 
 
-def solve_it(input_data):
+def solve_it(input_data, language="rust"):
+    if language == "python":
+        return solve_it_python(input_data)
     return solve_it_rust(input_data)
 
 
@@ -18,6 +20,7 @@ Item = namedtuple("Item", ["index", "value", "weight"])
 
 
 def solve_it_python(input_data):
+    print("running in python", file=sys.stderr)
     # parse the input
     lines = input_data.split("\n")
 
@@ -67,7 +70,12 @@ if __name__ == "__main__":
         file_location = sys.argv[1].strip()
         with open(file_location, "r") as input_data_file:
             input_data = input_data_file.read()
-        print(solve_it(input_data))
+
+        if len(sys.argv) > 2:
+            language = sys.argv[2].lower().strip()
+            print(solve_it(input_data, language=language))
+        else:
+            print(solve_it(input_data))
     else:
         print(
             "This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/ks_4_0)"
