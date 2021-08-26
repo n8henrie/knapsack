@@ -49,31 +49,33 @@ fn permutations<T: Clone>(v: &mut [T]) -> Vec<Vec<T>> {
 
 impl Problem {
     fn solve(&self) -> Result<Solution> {
-        let mut solutions = <Vec<Solution>>::new();
         let mut items = self.items.clone();
-        for mut perm in permutations(&mut items) {
-            let mut bag = <Vec<Item>>::new();
-            loop {
-                if let Some(item) = perm.pop() {
-                    if bag.iter().map(|i| i.weight).sum::<u32>() + item.weight <= self.capacity {
-                        bag.push(item);
-                    }
-                } else {
-                    let mut indices = vec![false; self.items.len()];
-                    for item in &bag {
-                        indices[item.index] = true;
-                    }
-                    solutions.push({
-                        Solution {
+        let perms = permutations(&mut items);
+        let mut solutions: Vec<_> = perms
+            .iter()
+            .map(|perm| {
+                let mut perm = perm.clone();
+                let mut bag = <Vec<Item>>::new();
+                loop {
+                    if let Some(item) = perm.pop() {
+                        if bag.iter().map(|i| i.weight).sum::<u32>() + item.weight <= self.capacity
+                        {
+                            bag.push(item);
+                        }
+                    } else {
+                        let mut indices = vec![false; self.items.len()];
+                        for item in &bag {
+                            indices[item.index] = true;
+                        }
+                        return Solution {
                             value: bag.iter().map(|i| i.value).sum(),
                             is_optimal: true,
                             included: indices,
-                        }
-                    });
-                    break;
+                        };
+                    }
                 }
-            }
-        }
+            })
+            .collect();
         solutions.sort_by_key(|s| s.value);
         if let Some(sol) = solutions.pop() {
             Ok(sol)
