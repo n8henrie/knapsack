@@ -10,4 +10,4 @@ name = "knapsack"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.16.5"
+pyo3 = "0.24.1"
